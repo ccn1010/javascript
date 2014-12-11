@@ -14,18 +14,19 @@
 				text-overflow: ellipsis;
 			}
 			.resize{
-				display: block;
+				display: none;
 				margin-top: -8px;
 				margin-left: -10px;
 				position: absolute;
 				width: 36px;
+				z-index:-999;
 			}
 			#rw{
+				border:solid 1px yellow;
 				cursor:none;
-				border: 0;
 				padding: 0 5;
-				width: 36px;
-				height: 16px;
+				width: 136px;
+				height: 100px;
 			}
 		</style>
 	</head>
@@ -36,7 +37,7 @@
 			<tr>
 				<th>aaaaaaaaaaa</th>
 				<th class="res">bbbbbbbbbbb水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水</th>
-				<th rowspan="3"><div id="rw" draggable="true"><div class="resize"><-></div></div></th>
+				<!--<th rowspan="3"><div id="rw" draggable="true"><div class="resize"><-></div></div></th>-->
 				<th>ccccccccccc</th>
 			</tr>
 			<tr>
@@ -50,6 +51,7 @@
 				<td>c</td>
 			</tr>
 		</table>
+		
 	</div>
 		<script>
 		(function(){
@@ -60,17 +62,17 @@
 			var initWidth;
 			
 			var move = function(e){
-				this.firstChild.style.top = e.pageY;
-				this.firstChild.style.left = e.pageX;
+				this.firstChild.firstChild.style.top = e.pageY;
+				this.firstChild.firstChild.style.left = e.pageX;
 			}
 			
 			var hide = function(e){
-				this.firstChild.style.display = 'none';
+				this.firstChild.firstChild.style.display = 'none';
 			}
 			
 			var show = function(e){
 				console.log('aaaa');
-				this.firstChild.style.display = 'block';
+				this.firstChild.firstChild.style.display = 'block';
 			};
 			
 			rs.parentNode.addEventListener('mouseover', show, false);
@@ -93,11 +95,12 @@
 				sty.maxWidth = initWidth + offset;
 				sty.width = initWidth + offset;
 				
-				show.call(self, e);
-				move.call(self, e);
+				show.call(self.parentNode, e);
+				move.call(self.parentNode, e);
 			}, false);
 			
-			rs.addEventListener('dragend', hide, false);
+			var phide = hide.apply(rs.parentNode);
+			rs.addEventListener('dragend', phide, false);
 		})();
 		</script>
 	</body>
