@@ -1,0 +1,104 @@
+<html>
+	<head>
+	<meta charset="utf-8"/>
+		<style type="text/css">
+			table{
+				border:solid 1px red;
+			}
+			th,td{border:solid 1px green;}
+			.res{
+				width: 100px;
+				max-width: 100px;
+				white-space: nowrap;
+				overflow-x: hidden;
+				text-overflow: ellipsis;
+			}
+			.resize{
+				display: block;
+				margin-top: -8px;
+				margin-left: -10px;
+				position: absolute;
+				width: 36px;
+			}
+			#rw{
+				cursor:none;
+				border: 0;
+				padding: 0 5;
+				width: 36px;
+				height: 16px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content">
+		
+		<table>
+			<tr>
+				<th>aaaaaaaaaaa</th>
+				<th class="res">bbbbbbbbbbb水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水水</th>
+				<th rowspan="3"><div id="rw" draggable="true"><div class="resize"><-></div></div></th>
+				<th>ccccccccccc</th>
+			</tr>
+			<tr>
+				<td>a</td>
+				<td>b</td>
+				<td>c</td>
+			</tr>
+			<tr>
+				<td>a</td>
+				<td>b</td>
+				<td>c</td>
+			</tr>
+		</table>
+	</div>
+		<script>
+		(function(){
+			console.log('=================================')
+			var rs = document.getElementById('rw');
+			var th = rs.parentNode.previousElementSibling;
+			var initX;
+			var initWidth;
+			
+			var move = function(e){
+				this.firstChild.style.top = e.pageY;
+				this.firstChild.style.left = e.pageX;
+			}
+			
+			var hide = function(e){
+				this.firstChild.style.display = 'none';
+			}
+			
+			var show = function(e){
+				console.log('aaaa');
+				this.firstChild.style.display = 'block';
+			};
+			
+			rs.parentNode.addEventListener('mouseover', show, false);
+			
+			rs.parentNode.addEventListener('mouseout', hide, false);
+			
+			rs.parentNode.addEventListener('mousemove', move, false);
+			
+			rs.addEventListener('dragstart', function(e){
+				initX = e.pageX;
+				initWidth = th.offsetWidth;
+				e.dataTransfer.setData('dropEffect', 'none');
+			}, false);
+			
+			rs.addEventListener('drag', function(e){
+				console.log('ssss');
+				var self = this;
+				var offset = e.pageX - initX;
+				var sty = th.style;
+				sty.maxWidth = initWidth + offset;
+				sty.width = initWidth + offset;
+				
+				show.call(self, e);
+				move.call(self, e);
+			}, false);
+			
+			rs.addEventListener('dragend', hide, false);
+		})();
+		</script>
+	</body>
+</html>
