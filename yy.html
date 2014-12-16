@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<style>
+			div,span{
+				margin: 100px 20px;
+				width: 150px;
+				height: 150px;
+				background: skyblue;
+				display: inline-block;
+				position: relative;
+			}
+			#cover1,#cover2{
+				background: rgba(0,0,0,.3);
+				position: absolute;
+				left: -20px;
+				height: 0;
+			}
+			#cover1{
+				top: -100px;
+			}
+			#cover2{
+				bottom: -100px;
+			}
+		</style>
+	</head>
+	<body>
+	<!--为什么cover1和cover2要加top和bottom. mouseover事件不能捕获?-->
+		<div id="a"><span id="cover1"></span></div>
+		<div id="b"><span id="cover2"></span></div>
+		<script>
+			function tool(cover){
+				var hidding = true;
+				
+				setInterval(function(){
+					if(!hidding && cover.offsetHeight<150){
+						cover.style.height = cover.offsetHeight + 1;
+					}else if(hidding && cover.offsetHeight>0){
+						cover.style.height = cover.offsetHeight - 1;
+					}
+				}, 10);
+				
+				return {
+					hide: function(){
+						hidding = true;
+					}, 
+					show: function(){
+						hidding = false;
+					}
+				}
+			};
+			
+			(function(){
+				var abdiv = document.getElementsByTagName('div');
+			
+				for (var i = 0; i < abdiv.length; i++) {
+					var cover = abdiv[i].firstChild;
+					console.log("cover: "+cover.getAttribute('id'));
+					var cc = tool(cover);
+					abdiv[i].addEventListener('mouseover', (function(show){
+						return function(e){
+							show();
+						}
+					})(cc.show), false);
+						
+					abdiv[i].addEventListener('mouseout', (function(hide){
+						return function(e){
+							hide();
+						}
+					})(cc.hide), false);
+				}
+			})();
+
+
+		</script>
+	</body>
+</html>
