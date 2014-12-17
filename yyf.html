@@ -73,7 +73,7 @@
 					console.log("cover: "+cover.getAttribute('id'));
 					var cc = tool(cover);
 					// 这里回调函数是通过一个函数执行来生成的, 因为javascript没有块作用域,
-					// 所以如果直接写成下面这样, 那么会形成闭包, 两次for引用同一个cc对象,
+					// 所以如果直接写成下面这样, 那么会形成闭包(对cc.divcover();也就是cc的引用), 两次for引用同一个cc对象,
 					// 因为for循环执行完之后, 闭包引用变量的作用域同时指向了注释1)处的函数
 					//abdiv[i].addEventListener('mouseover', function(e){
 					//		cc.divcover();
